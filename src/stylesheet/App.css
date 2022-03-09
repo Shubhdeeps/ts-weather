@@ -1,0 +1,47 @@
+body{
+    font-family: 'Saira Condensed', sans-serif;
+    padding: 0%;
+    margin: 0%;
+    background-color: black;
+    overflow: hidden;
+}
+
+input:focus{
+    border: none !important;
+    outline: none !important;
+}
+
+#btn{
+    cursor: pointer;
+}
+
+#moveBtn{
+    cursor: pointer;
+}
+
+#moveBtn:hover{
+    fill: #D5FF00;
+}
+
+#clickables{
+    cursor: pointer;
+    padding-left: 2px;
+}
+
+#clickables:hover{
+   border-left: 4px solid #D5FF00;
+}
+
+.waiting{
+    width: 70%;
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+
+    
+}

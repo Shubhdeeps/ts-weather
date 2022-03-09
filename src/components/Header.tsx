@@ -1,86 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { Card, Container, Navbar } from "react-bootstrap";
+import React, { useEffect } from "react";
+import {  Container, Navbar } from "react-bootstrap";
 import { getCities } from "../service/getServices";
-import { DCITY } from "../modals/Modals";
-
-interface CITY{
-    city:  DCITY[] | null,
-}
-
-interface HEAD extends CITY{
-    setCity: React.Dispatch<React.SetStateAction<DCITY[] | null>>
-}
-
-interface ISPEND extends CITY{
-    pending: boolean
-}
-
-
+import Suggestions from "./Suggestions";
+import { useIsExtend, useIsPending, useShortlistCities } from "../store/store";
 
 
 const Header: React.FC = (): JSX.Element => {
-    const [city, setCity] = useState<DCITY[] | null>(null);
-    const [pending, setPending] = useState<boolean>(false);
+    const width = window.innerWidth;
+    const setShortListCities = useShortlistCities(state => state.setCity);
+    const cities = useShortlistCities(state => state.cities)
+    const setPending = useIsPending(state => state.setIsPending);
+    const setExtend = useIsExtend(state => state.setIsPending);
+
+    const emptyCities = [{
+        country: '',
+        lat: '',
+        lng: '',
+        name: ''
+    }]
 
     useEffect(() => {
-        if(city)
-        setPending(false)
-    }, [city])
+        if(cities[0].name !== '' && cities.length === 1)
+            setPending(false)
+    }, [cities])
 
 
 
     const handleChange  = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value.length)
-
-        setCity(null);
+        setShortListCities(emptyCities);
         setPending(true);
 
         if(e.target.value.length === 0){
-            setCity(null);
+            setShortListCities(emptyCities);
             setPending(false);
-         }
-         else if(e.target.value.length > 0){
-             getCities(e.target.value, setCity, setPending)
+            setExtend(false);
+        }
+        else if(e.target.value.length > 0){
+             setExtend(true);
+             getCities(e.target.value, setShortListCities, setPending)
          } 
       }
     
     return(<>
         <Navbar bg="light">
-        <Container>
+        <Container className={width > 550 ? '' : 'd-flex flex-column align-items-start'}>
           <Navbar.Brand href="#home">World Weather</Navbar.Brand>
-          <input 
-          onChange={(e) => handleChange(e)} 
-          type='text'
-          className="br-4"
-          />
+          <div style={{width: '14.3rem', border: '1px solid grey', borderRadius: '15px'}}>
+            <input 
+            style={{width: '12rem', background: 'none', border: 'none', height: '2rem', }}
+            onChange={(e) => handleChange(e)} 
+            type='text'
+            className="ms-2"
+            placeholder="Search"
+            />
+            <svg width="20" height="20" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 44H46.84L45.72 42.92C49.64 38.36 52 32.44 52 26C52 11.64 40.36 0 26 0C11.64 0 0 11.64 0 26C0 40.36 11.64 52 26 52C32.44 52 38.36 49.64 42.92 45.72L44 46.84V50L64 69.96L69.96 64L50 44V44ZM26 44C16.04 44 8 35.96 8 26C8 16.04 16.04 8 26 8C35.96 8 44 16.04 44 26C44 35.96 35.96 44 26 44Z" fill="black"/>
+            </svg>
+          </div>
         </Container>
       </Navbar>
-      <ExtensionCard city={city} pending={pending} />
+         <Suggestions />
     </>
     )
 } 
 
-const ExtensionCard: React.FC<ISPEND> = ({ city, pending }) => {
-    const renderCities = () => {
-        // to ensure city would not be empty
-        if(city){
-            if(city[0].name === 'Not Found' ){
-                return(<> City Not Found </>)
-            }
-           return city.map(item => {
-            return(<p key={item.name}> {item.name}, {item.country} </p>)
-          })
-        }
-      }
 
-    return(
-        <Container>
-            {pending && <Card> <Card.Body> Loading... </Card.Body></Card>}
-            {city && !pending && <Card>
-                <Card.Body>{renderCities()}</Card.Body>
-            </Card>}
-        </Container>
-    )
-}
 
 export default Header;

@@ -1,34 +1,56 @@
-
-import Image from 'react-bootstrap/Image'
-import broken from '../assets/broken_clouds.svg'
 import Weather from './Weather'
-
+import Forecast from './Forecast';
+import { styles } from '../stylesheet/styles';
+import { useTheme, useWeather } from '../store/store';
 
 const Body: React.FC = (): JSX.Element => {
+    const weather = useWeather(state => state.weather)
+    const theme = useTheme(state => state.theme);
 
-    const styles = {
-        dataContainer:{
-            borderRadius: '20px',
-        },
-        imageSettings: {
-            borderRadius: '20px',
-        },
-        insideContainer:{
-            border: '1px solid blue',
-            width: '100%',
-            height: '100%'
-        }
-    }
-
+    const {primary, secondary} = theme;
+    
     return(
-    <div className='container-lg d-flex justify-content-center align-items-center position-relative p-0'>
-       <div style={styles.dataContainer} className='position-relative'>
-         <div  style={styles.insideContainer} className="position-absolute">
-             <Weather />
-         </div>
-         <Image style={styles.imageSettings} src={broken} fluid />
-       </div>
-    </div>
+       <div style={styles.dataContainer}>
+         {weather.name === ""  ? <div>Waiting for data...</div>: <Weather />}
+         <div className='position-absolute d-flex flex-column align-items-center'  style={styles.footerDiv} >
+         <svg width="70%" viewBox="0 0 1303 395" fill="none">
+            <path d="M729.689 394H0L262.277 161.169L364.838 70.1265L442.908 139.424L729.689 394Z" fill={primary}/>
+            <path d="M1042.02 108.035L781.042 394.077H1303L1042.02 108.035L781.042 394.077H1303L1042.02 108.035Z" fill={primary}/>
+            <path d="M365.017 70.1265L371.052 135.485L351.111 229.535C351.111 229.535 515.823 283.403 516.266 285.858C516.71 288.313 481.57 357.379 481.57 357.379L729.689 394L365.017 70.1265Z" fill={secondary}/>
+            <path d="M1042.02 107.035L1084.57 183.785L1160.01 299.883L1204.67 317.386C1204.67 317.386 1201.74 344.572 1201.94 348.063C1202.14 351.555 1303 393.077 1303 393.077L1042.02 107.035Z" fill={secondary}/>
+            <path d="M1080.25 394.04H363.053L620.839 111.486L721.645 1L798.377 85.0964L1080.25 394.04Z" fill={primary}/>
+            <path d="M721.644 0L727.578 79.3167L707.969 193.452C707.969 193.452 869.941 258.824 870.377 261.804C870.813 264.783 836.257 348.599 836.257 348.599L1080.25 393.04L721.644 0Z" fill={secondary}/>
+            <path d="M1206 340C1220.91 340 1233 327.912 1233 313C1233 298.088 1220.91 286 1206 286C1191.09 286 1179 298.088 1179 313C1179 327.912 1191.09 340 1206 340Z" fill="#479522"/>
+            <path d="M1208.77 394H1203.23L1205.76 308.846L1208.77 394Z" fill="#3F3D56"/>
+            <path d="M1206.07 324.785L1212.23 316.462L1205.98 326.846L1205.31 325.692L1206.07 324.785Z" fill="#3F3D56"/>
+            <path d="M1205.32 333.093L1199.77 324.769L1205.39 335.154L1206 334.001L1205.32 333.093Z" fill="#3F3D56"/>
+            <path d="M993.25 353.5C1004.16 353.5 1013 344.658 1013 333.75C1013 322.842 1004.16 314 993.25 314C982.342 314 973.5 322.842 973.5 333.75C973.5 344.658 982.342 353.5 993.25 353.5Z" fill="#479522"/>
+            <path d="M995.276 393H991.224L993.071 330.711L995.276 393Z" fill="#3F3D56"/>
+            <path d="M993.3 342.37L997.808 336.282L993.238 343.878L992.744 343.034L993.3 342.37Z" fill="#3F3D56"/>
+            <path d="M992.749 348.448L988.692 342.359L992.805 349.955L993.25 349.112L992.749 348.448Z" fill="#3F3D56"/>
+            <path d="M1023 314C1045.09 314 1063 296.091 1063 274C1063 251.909 1045.09 234 1023 234C1000.91 234 983 251.909 983 274C983 296.091 1000.91 314 1023 314Z" fill="#479522"/>
+            <path d="M1027.1 394H1018.9L1022.64 267.846L1027.1 394Z" fill="#3F3D56"/>
+            <path d="M1023.1 291.459L1032.23 279.128L1022.98 294.513L1021.97 292.803L1023.1 291.459Z" fill="#3F3D56"/>
+            <path d="M1021.99 303.768L1013.77 291.436L1022.1 306.82L1023 305.112L1021.99 303.768Z" fill="#3F3D56"/>
+            <path d="M1252 314C1274.09 314 1292 296.091 1292 274C1292 251.909 1274.09 234 1252 234C1229.91 234 1212 251.909 1212 274C1212 296.091 1229.91 314 1252 314Z" fill="#479522"/>
+            <path d="M1256.1 394H1247.9L1251.64 267.846L1256.1 394Z" fill="#3F3D56"/>
+            <path d="M1252.1 291.459L1261.23 279.128L1251.98 294.513L1250.97 292.803L1252.1 291.459Z" fill="#3F3D56"/>
+            <path d="M1250.99 303.768L1242.77 291.436L1251.1 306.82L1252 305.112L1250.99 303.768Z" fill="#3F3D56"/>
+            <path d="M1164 316C1185.54 316 1203 298.539 1203 277C1203 255.461 1185.54 238 1164 238C1142.46 238 1125 255.461 1125 277C1125 298.539 1142.46 316 1164 316Z" fill="#479522"/>
+            <path d="M1168 394H1160L1163.65 271L1168 394Z" fill="#3F3D56"/>
+            <path d="M1164.1 294.022L1173 282L1163.98 297L1163 295.333L1164.1 294.022Z" fill="#3F3D56"/>
+            <path d="M1163.01 306.024L1155 294L1163.12 309L1164 307.334L1163.01 306.024Z" fill="#3F3D56"/>
+            <path d="M1098 324C1117.33 324 1133 308.33 1133 289C1133 269.67 1117.33 254 1098 254C1078.67 254 1063 269.67 1063 289C1063 308.33 1078.67 324 1098 324Z" fill="#479522"/>
+            <path d="M1101.59 394H1094.41L1097.68 283.615L1101.59 394Z" fill="#3F3D56"/>
+            <path d="M1098.09 304.277L1106.08 293.487L1097.98 306.949L1097.1 305.452L1098.09 304.277Z" fill="#3F3D56"/>
+            <path d="M1097.11 315.047L1089.92 304.256L1097.21 317.718L1098 316.223L1097.11 315.047Z" fill="#3F3D56"/>
+        </svg>
+
+        <div className='bg-dark' style={styles.footerDiv}>
+        {weather.name !== ""  &&  <Forecast />}
+        </div>  
+        </div>   
+      </div>
     )
 }
 
